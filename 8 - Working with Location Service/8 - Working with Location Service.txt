@@ -1,0 +1,62 @@
+# Practical 8 : Working with Location Service.
+
+# Step 1:
+==> Create a folder named Prac 8 and move your TeamService folder of Prac 7 in this folder.
+==> Open command prompt and create a web API project:
+
+dotnet new webapi -o LocationService
+
+==> Remove existing weatherforecast files both LocationService and controllers folder.
+
+# Step 2:
+==> Create a folder named Models in the TeamService folder.
+==> Create "LocationRecord.cs" in Models folder and write the following code:
+==> Create "ILocationRecordRepository.cs" in the Models folder with the following code:
+
+# Step 3:
+==> Create "LocationRecordController.cs" in the Controllers folder with the following code:
+
+# Step 4:
+==> Create "Persistence" in the teamservice folder and create the following files.
+==> Create "InMemoryLocationRecordRepository.cs" in the Persistence folder with the following:
+
+# Step 5:
+==> Create "Startup.cs" in the TeamService folder with the following code:
+==> Replace "TeamService.csproj" file with the following code:
+==> Replace "Program.cs" file with the following code:
+
+=====================================================================================================================================================================
+# Step 6:
+==> We require three command prompts to run this practical.
+==> Command Prompt 1: Go to LocationService Project and run the project:
+dotnet run –server.urls http://*:5001
+
+==> Command Prompt 2: Go to TeamService Project and run the project: 
+dotnet run
+
+==> Rest of the command is to executed on command prompt 3:
+Note = The port number is given of the TeamService Project.
+
+--> a) Command to Add new team.
+curl -H "Content-Type:application/json" -X POST -d "{\"id\":\"e52baa63-d511-417e-9e54-7aab04286281\",\"name\":\"Ayush\"}" http://localhost:5174/teams
+
+--> b) Command to add new member to team.
+curl -H "Content-Type:application/json" -X POST -d "{\"id\":\"63e7acf8-8fae-42ce-9349-3c8593ac8292\", \"firstName\":\"Vivek\", \"lastName\":\"Negi\"}" http://localhost:5174/teams/e52baa63-d511-417e-9e54-7aab04286281/members
+
+--> c) Command to Add location for member
+curl -H "Content-Type:application/json" -X POST -d "{\"id\":\"64c3e69f-1580-4b2fa9ff-2c5f3b8f0e1f\", \"latitude\":12.0,\"longitude\":12.0,\"altitude\":10.0, \"timestamp\":0,\"memberId\":\"63e7acf8-8fae-42ce-9349-3c8593ac8292\"}" http://localhost:5186/locations/63e7acf8-8fae-42ce-9349-3c8593ac8292
+
+==========================================================================================================================================================================================================================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+

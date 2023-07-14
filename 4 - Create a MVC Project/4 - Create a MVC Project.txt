@@ -1,0 +1,90 @@
+# Practical 4 : Creating a MVC based ASP .NET application.
+
+Step 1:
+==> Go to command prompt and navigate to the folder to where you want to store application files.
+==> Enter the following command:
+
+dotnet new mvc --auth none
+
+===================================================================================================
+Step 2:
+==> Go to Notepad. Create a new file and enter the following code.
+
+namespace Prac4.Models
+{
+  public class StockQuote
+  {
+    public string Symbol{get; set;}= default!;
+    public int Price{get; set;}= default!;
+  }
+}
+
+==> Save the file as ‘StockQuote.cs’ in the Models folder of the project.
+
+====================================================================================================
+Step 3:
+==> Go to Views folder  Open Home folder  Open Index.cshtml file.
+==> Replace the existing code with the following:
+
+@{
+  ViewData["Title"] = "Home Page";
+}
+<html>
+<head>
+<title>Hello World</title>
+</head>
+<body>
+<h1>Hello World</h1>
+<div>
+  <h2>StockQuote</h2>
+  <div>
+    Symbol: @Model.Symbol<br/>
+    Price: $@Model.Price<br/>
+  </div>
+</div>
+
+</body>
+</html>
+
+=====================================================================================================
+Step 4:
+==> Go to Controllers folder  Open HomeController.cs file.
+==> Replace the existing code with the following:
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Prac4.Models;
+
+namespace Prac4.Controllers;
+
+public class HomeController : Controller
+{
+  public async Task <IActionResult>Index()
+  {
+    var model= new StockQuote{ Symbol="Nike", Price=3200};
+    await Task.Delay(0);
+    return View(model);
+  }
+}
+
+=======================================================================================================
+Step 5:
+==> Go back to the command prompt. 
+==> Restore and run the application using ‘dotnet restore’ and ‘dotnet run’ respectively.
+
+dotnet restore
+dotnet run
+
+==> Open the above URL in any browser.
+
+========================================================================================================
+========================================================================================================
+
+
+
+

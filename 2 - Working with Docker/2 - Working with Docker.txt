@@ -1,0 +1,66 @@
+# Practical 2 : Working with Docker.
+
+# Step 1:
+==> Go to Docker Hub using the following URL: 
+https://hub.docker.com/
+==> Go to Repositories  Click on Create repository.
+==> Set the name of the repository as ‘repo1’ and add some description about the repository. 
+==> Set the visibility as Private.
+
+# Step 2:
+==> Go to Docker Playground using the following link: 
+https://labs.play-with-docker.com/
+==> Click on start & create on add new instance.
+
+# Step 3:
+==> Enter the following command :
+docker --version
+docker pull hello-world
+docker images
+docker login   # Enter Docker Hub username and password.
+
+# Step 4:
+==> Create a tag in the repository :
+docker tag <image_id> <username>/<repository_name>:tag_name
+==> Eg., docker tag 9c7a54a9a43c vivekn07/repo1:firsttag
+
+==> To push the hello world image :
+docker push <username>/<repository_name>:tag_name
+==> Eg., docker push vivekn07/repo1:firsttag
+
+==> Now go to Docker Hub. 
+==> Under Repositories, select your repository  Go to Tags  You will see the ‘firsttag’ tag.
+
+# Step 5:
+==> Build your own image and then push it to the docker repository and run it.
+==> To build a new image, use the following commands:
+cat > Dockerfile << EOF
+FROM busybox
+cmd echo “Hello World! This is my first docker image”
+EOF
+
+==> To build this image to a new repository.
+docker build -t <username>/<repository_name> .
+==> Eg., docker build -t vivekn07/repo2 .
+
+==> Push this image to Docker hub repository.
+docker push <username>/<repository_name>
+==> Eg., docker push vivekn07/repo2
+
+==> Check the output on docker hub.
+==> To run this image.
+docker run <username>/<repository_name>
+==> Eg., docker run vivekn07/repo2
+
+
+
+
+
+
+
+
+
+
+
+
+

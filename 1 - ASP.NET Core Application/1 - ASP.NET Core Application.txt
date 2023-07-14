@@ -1,0 +1,111 @@
+# Practical 1 : Create a console based ASP.Net Core application.
+
+STEPS:
+
+1. First of all, check the availabilty and version of dotnet.
+
+dotnet 
+
+dotnet --version
+
+
+2. Create a directory where you want to store all the files.
+
+# Eg.,
+
+mkdir Prac1
+
+cd Prac1
+
+
+3. Create a new dotnet console and restore it.
+
+dotnet new console
+
+dotnet restore
+
+
+4. Now open and check two file "Prac1.csproj" & "Program.cs".
+
+# There is already by default code present in the file "Prac1.csproj". Don't change it.
+# Open Program.cs. The "Hello World" code will available there by default.
+
+
+5. Run the Program and the output will be "Hello World"
+
+dotnet run
+
+
+6. Install the six packages using the following command :
+
+dotnet add package package_name -v version_number
+# Here, package_name is replace with below packages,
+# & version_number will be 1.1.1 
+
+# Eg., 
+dotnet add package Microsoft.AspNetCore.Mvc -v 1.1.1
+
+# Packages are given below :
+Microsoft.AspNetCore.Mvc
+Microsoft.AspNetCore.Server.Kestrel
+Microsoft.Extensions.Logging
+Microsoft.Extensions.Logging.Console
+Microsoft.Extensions.Logging.Debug
+Microsoft.Extensions.Configuration.CommandLine
+
+
+7. Use ‘dotnet restore’ to restore (Optional)
+
+dotnet restore
+
+
+8. Open Program.cs and enter the following code.
+
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+namespace helloworld
+{
+  internal class Program
+  {
+    static void Main(string[] args)
+    {
+      var config=new ConfigurationBuilder()
+        .AddCommandLine(args)
+        .Build();
+      var host=new WebHostBuilder()
+        .UseKestrel()
+        .UseStartup<Startup>()
+        .UseUrls("http://localhost:5200/")
+        .UseConfiguration(config)
+        .Build();
+      host.Run();
+     }
+  }
+  public class Startup
+  {
+    public Startup(IHostingEnvironment env) {}
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+    {
+      app.Run(async (context) => {await
+      context.Response.WriteAsync("Hello, world!");});
+    }
+  }
+}
+
+
+9. Now restore and run the Program.
+
+dotnet restore
+
+dotnet run
+
+
+10. Copy the URL from cmd and open it in any browser.
+
+# It will show "Hello World" and that the output.
+
+=========================================================================================================

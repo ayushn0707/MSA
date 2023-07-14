@@ -1,0 +1,77 @@
+# Practical 7 : Working with Team Service.
+
+# Step 1:
+==> Open command prompt and create a web API project:
+
+dotnet new webapi -o Team Service
+
+==> Remove existing weatherforecast files both Teamservice and controllers folder.
+
+=====================================================================================================================================================================
+# Step 2:
+==> Create a folder named Models in the TeamService folder.
+==> Create "Member.cs" in Models folder and write the following code:
+==> Create "Team.cs" in the Models folder with the following code:
+
+# Step 3: 
+==> Create "MembersController.cs" in the Controllers folder with the following code:
+==> Create "TeamsController.cs" in the Controllers folder with the following code:
+
+# Step 4:
+==> Create a folder named Persistence in the TeamService folder --> "ITeamRepository.cs" & "MemoryTeamRepository.cs"
+==> Create "ITeamRepository.cs" in the Persistence folder with the following code:
+==> Create "MemoryTeamRepository.cs" in the Persistence folder with the following code:
+
+# Step 5: 
+==> Create "Startup.cs" in the TeamService folder with the following code:
+==> Replace the code in "TeamService.csproj" file with the following code:
+==> Replace the code in "Program.cs" file with the following code:
+
+=====================================================================================================================================================================
+# Step 6:
+==> Run the application in command prompt.
+
+dotnet run
+
+==> Note down the URL. Open one more command prompt window. Enter the following commands:
+
+--> a) To get all teams.
+curl --insecure https://localhost:5001/teams
+
+--> b) To create new team.
+curl --insecure -H "Content-Type:application/json" -X POST -d "{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"MSA\"}" https://localhost:5001/teams
+
+curl --insecure -H "Content-Type:application/json" -X POST -d "{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Image Processing\"}" https://localhost:5001/teams
+
+--> c) To get all teams.
+curl --insecure https://localhost:5001/teams
+
+--> d) To get single team with team-id as parameter.
+curl --insecure https://localhost:5001/teams/00000000-0000-0000-0000-000000000002
+
+--> e) To update team details (change name of first team from "MSA" to "Microservices Architecture").
+curl --insecure -H "Content-Type:application/json" -X PUT -d"{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Microservices Architecture\"}" https://localhost:5001/teams/00000000-0000-0000-0000-000000000001
+
+curl --insecure https://localhost:5001/teams
+
+--> f) To delete team.
+curl --insecure -H "Content-Type:application/json" -X DELETE https://localhost:5001/teams/00000000-0000-0000-0000-000000000002
+
+curl --insecure https://localhost:5001/teams
+
+==========================================================================================================================================================================================================================================================================================================================================
+
+# if error occurs,
+
+dotnet dev-certs https --trust 
+
+
+
+
+
+
+
+
+
+
+

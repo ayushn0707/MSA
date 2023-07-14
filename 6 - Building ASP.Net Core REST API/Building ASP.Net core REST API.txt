@@ -1,0 +1,192 @@
+# Practical 5 : Building ASP.Net core REST API.
+
+# Step 1:
+==> Go to command prompt and navigate to the folder to where you want to store application files.
+==> Enter the following command:
+
+dotnet new webapi -o Glossary
+cd Glossary
+dotnet run
+
+==> Note down the URL as shown above and open one more command prompt window. 
+==> Enter the following command with URL change: 
+
+curl –-insecure http://localhost:5180/WeatherForecast
+
+==> Delete the WeatherForecast.cs from the Glossary folder &
+==> WeatherForecastController.cs from the Controllers folder.
+
+=====================================================================================================================================================================
+# Step 2:
+==> Create a class file named “GlossaryItem.cs” in the Glossary folder with the following code.
+
+namespace Glossary
+{
+  public class GlossaryItem
+  {
+    public string Term {get; set;}= default!;
+    public string Definition {get; set;}= default!;
+  }
+}
+
+
+==> Create a class file named “GlossaryController.cs” in the Controllers folder with the following code:
+
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
+
+namespace Glossary.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+
+public class GlossaryController :ControllerBase
+{
+  private static List<GlossaryItem> Glossary = new List<GlossaryItem>
+  {
+    new GlossaryItem
+    {
+      Term="HTML",
+      Definition="Hypertext Markup Language"
+    },
+
+    new GlossaryItem
+    {
+      Term="MVC",
+      Definition="Model View Controller"
+    },
+    
+     new GlossaryItem
+    {
+      Term="OpenID",
+      Definition="An open standard for authentication"
+    },
+  };
+
+  [HttpGet]
+  public ActionResult<List<GlossaryItem>> Get()
+  { 
+    return Ok(Glossary);
+  }
+
+  [HttpGet]
+  [Route("{term}")]
+  public ActionResult<GlossaryItem> Get(string term)
+  {
+    var glossaryItem = Glossary.Find(item =>
+    item.Term.Equals(term, StringComparison.InvariantCultureIgnoreCase));
+    if (glossaryItem == null)
+    { 
+      return NotFound();
+    } 
+    else
+    {
+      return Ok(glossaryItem);
+    }
+  }
+
+  [HttpPost]
+  public ActionResult Post(GlossaryItem glossaryItem)
+  {
+    var existingGlossaryItem = Glossary.Find(item =>
+    item.Term.Equals(glossaryItem.Term, StringComparison.InvariantCultureIgnoreCase));
+    if (existingGlossaryItem != null)
+    {
+      return Conflict("Cannot create the term because it already exists.");
+    }
+    else
+    {
+      Glossary.Add(glossaryItem);
+      var resourceUrl = Path.Combine(Request.Path.ToString(), Uri.EscapeUriString(glossaryItem.Term));
+      return Created(resourceUrl, glossaryItem);
+    }
+  }
+
+  [HttpPut]
+  public ActionResult Put(GlossaryItem glossaryItem)
+  {
+    var existingGlossaryItem = Glossary.Find(item =>
+    item.Term.Equals(glossaryItem.Term, StringComparison.InvariantCultureIgnoreCase));
+    if (existingGlossaryItem == null)
+    {
+      return BadRequest("Cannot update a nont existing term.");
+    } 
+      else
+    {
+      existingGlossaryItem.Definition = glossaryItem.Definition;
+      return Ok();
+    }
+  }
+
+  [HttpDelete]
+  [Route("{term}")]
+  public ActionResult Delete(string term)
+  {
+    var glossaryItem = Glossary.Find(item =>
+    item.Term.Equals(term, StringComparison.InvariantCultureIgnoreCase));
+    if (glossaryItem == null)
+    { 
+      return NotFound();
+    }
+    else
+    { 
+      Glossary.Remove(glossaryItem);
+      return NoContent();
+    }
+  }
+}
+
+=====================================================================================================================================================================
+Step 3: 
+==> Run the application in command prompt: 
+
+dotnet run
+
+==> Note down the URL. Open one more command prompt window. 
+==> Enter the following commands:
+
+==> a) Getting the list of Items
+
+curl --insecure http://localhost:5180/api/glossary
+
+==> b) Getting single Item
+
+curl http://localhost:5180/api/glossary/MVC
+curl http://localhost:5180/api/glossary/HTML
+curl http://localhost:5180/api/glossary/OpenID
+
+==> c) Creating an Item
+
+curl --insecure -X POST -d "{\"term\": \"MFA\",\"definition\":\"An authentication process.\"}" -H "Content-Type: application/json" http://localhost:5180/api/glossary
+
+--> Check the output using:
+
+curl --insecure http://localhost:5180/api/glossary/MFA
+
+==> d) Updating an Item
+
+curl --insecure -X PUT -d "{\"term\": \"MVC\",\"definition\":\"Modified record of Model View Controller.\"}" -H "Content-Type: application/json" http://localhost:5180/api/glossary
+
+--> Check the output using:
+
+curl --insecure http://localhost:5180/api/glossary/MVC
+
+==> Deleting an Item
+
+curl –-insecure --request DELETE --url http://localhost:5180/api/glossary/OpenID
+
+--> Check the output using:
+curl --insecure http://localhost:5180/api/glossary  
+OR
+curl --insecure http://localhost:5180/api/glossary/OpenID
+
+==========================================================================================================================================================================================================================================================================================================================================
+
+
+
+
+
+
+

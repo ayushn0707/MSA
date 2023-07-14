@@ -1,0 +1,101 @@
+Practical 5 : Running a Asp.net Core Console Application in Docker Container.
+
+# Step 1:
+==> Go to command prompt and navigate to the folder to where you want to store application files.
+==> Enter the following command:
+dotnet new console -o App -n DotNet.Docker
+
+==> Go back to command prompt and run the application using this command:
+dotnet run
+
+======================================================================================================
+# Step 2: 
+==> Go to project folder  Open App folder  Open Program.cs
+==> Replace the existing code with the following code:
+
+var counter = 0;
+var max = args.Length is not 0 ? Convert.ToInt32(args[0]) : -1;
+while (max is -1 || counter < max)
+{
+  Console.WriteLine($"Counter: {++counter}");
+  await Task.Delay(TimeSpan.FromMilliseconds(1_000));
+}
+
+==> The above given code counts numbers every second.
+==> Save the file and run the application in command prompt using this command:
+dotnet run
+dotnet run -- 3
+
+======================================================================================================
+# Step 3:
+==> To publish the app, run the following command:
+dotnet publish -c Release
+
+==> This command compiles your app to the publish folder.
+==> The path to the publish folder from the working folder will be ".\App\bin\Release\net7.0\publish\".
+
+=======================================================================================================
+# Step 4:
+==> Open Notepad  Create a Dockerfile using the following code:
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /App
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -c Release -o out
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /App
+COPY --from=build-env /App/out .
+ENTRYPOINT ["dotnet", "DotNet.Docker.dll"]
+
+==> Note: While saving the file, use double inverted quotes - "Dockerfile" and save it in App Folder
+
+=======================================================================================================
+# Step 5:
+==> Open Docker Desktop  Go to Images.
+==> Go back to the command prompt.
+==> Create a local repository named 'counter-image' and build the image using the following command:
+docker build -t counter-image -f Dockerfile .
+
+==> Run following command to see a list of images installed
+docker images
+
+=======================================================================================================
+# Step 6:
+==> Create a container named 'core-counter' using the following command:
+docker create --name core-counter counter-image
+
+==> To see a list of all containers, use the this command:
+docker ps -a
+
+=======================================================================================================
+# Step 7:
+==> Start the 'core-counter' container using following command:
+docker start core-counter
+
+==> Check the output in Docker Desktop  Containers  core-counter  Logs.
+
+==> To stop the code, enter this command:
+docker stop core-counter
+
+=======================================================================================================
+=======================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
